@@ -8,8 +8,8 @@ library(tidyverse)
 #STEP 1: Load required files
 ######
 #Freeze files from the 320 trio cohort
-setwd("/Volumes/helbig_lab/Dropbox/HPO_collaborated/Permutation_Analysis_Manuscript/")
-variant = read.csv("/Volumes/helbig_lab/Dropbox/Freeze/V7_Cumulative_328_Freeze_csv.csv", 
+
+variant = read.csv("V7_Cumulative_328_Freeze_csv.csv", 
                    stringsAsFactors = F) %>%  dplyr::rename(famID = Family_ID) %>%
   #harmonize EG0192, EG0180 so conistent with other dataframes
   mutate(famID=replace(famID, famID == "EG0192P", "EG0192")) %>% 
@@ -320,4 +320,4 @@ for (i in 1:nrow(gene_count)){
 }
 
 #write.table(gene_count,"gene_count_DNM_filtered.txt")
-#write.csv(gene_count,"expanded_freeze_320_v1/gene_count_res_avg_log2.csv",row.names = F)
+#write.csv("gene_count_res_avg_log2.csv",row.names = F)
