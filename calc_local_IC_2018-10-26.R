@@ -9,7 +9,7 @@ library(tidyverse)
 #STEP 1: Load required files
 ######
 #Freeze files from the 320 trio cohort
-setwd("/Volumes/helbig_lab/Dropbox/HPO_collaborated/Permutation_Analysis_Manuscript")
+
 exp321=read.csv("320_Expanded_v1_PG_clean.csv",stringsAsFactors = F)
 
 #allHPOs - static file
