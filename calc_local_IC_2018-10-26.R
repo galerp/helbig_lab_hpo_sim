@@ -49,7 +49,7 @@ base_IC <- pat_table_base %>%
 prop_IC <- pat_table_prop %>% 
   dplyr::count(HPO) %>% 
   dplyr::mutate(local.Prop.freq = n/length(unique(pat_table_base$famID))) %>% 
-  dplyr::mutate(Propagated.local.IC = -log2(local.Prop.freq)) %>% 
+  dplyr::mutate(Propagated.local.IC = -log10(local.Prop.freq)) %>% 
   dplyr::select(-n)
 
 local_IC <- allHPOs %>% 
@@ -59,7 +59,7 @@ local_IC <- allHPOs %>%
   replace(., is.na(.),0)
 
 
-#write.csv(local_IC, "Local_IC_320_log2.csv",row.names = F)
+#write.csv(local_IC, "Local_IC_320_log10.csv",row.names = F)
 
 #write.csv(pat_table_base, "Local_Base_per_patient_320",row.names = F)
 
