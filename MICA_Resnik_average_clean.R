@@ -19,8 +19,8 @@ allHPOs=allHPOs[!duplicated(allHPOs$term),]
 local_IC=read.csv("Local_IC_320_log2.csv",stringsAsFactors = F)
 
 #HPO terms in cohort (base and propagated)
-pat_table_base <- read.csv("Local_Base_per_patient_320_v2.csv")
-pat_table_prop <- read.csv("Local_Prop_per_patient_320_v1.csv")
+pat_table_base <- read.csv("Local_Base_per_patient_320.csv")
+pat_table_prop <- read.csv("Local_Prop_per_patient_320.csv")
 
 #generate HPO/IC table (required for mica function)
 ic <- local_IC[,c("term","Propagated.local.IC")]
