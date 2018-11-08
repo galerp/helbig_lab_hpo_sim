@@ -15,7 +15,7 @@ variant = read.csv("V7_Cumulative_328_Freeze_csv.csv",
   mutate(famID=replace(famID, famID == "EG0192P", "EG0192")) %>% 
   mutate(famID=replace(famID, famID == "EG0180P", "EG0180"))
   
-sim_score = read.csv("expanded_freeze_320_v1/full_trio_sim_matrix_resnik_avg_fast_log2_2018-10-30.csv",stringsAsFactors = F,row.names = 1)
+sim_score = read.csv("full_trio_sim_matrix_resnik_avg_fast_log2_2018-10-30.csv",stringsAsFactors = F,row.names = 1)
 
 
 ######
