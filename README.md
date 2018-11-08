@@ -34,6 +34,8 @@ This is a repository for collaborative work within the Helbig Lab research team 
 #####       * expanded file - 320_Expanded_v1_PG_clean.csv
 #####       * full HPO table - HPO_is.a_tree.csv
 #####       * HPO ancestors - HPO_Ancestors_Compressed.csv
+#####       * n1_100k - 100k_resnik_def_log10_2018-10-30.csv
+n1_100k
 #### -Output: 
 #####       * Propagated IC
 #####       * Local IC - the local IC based on the propagated HPO term frequency in the cohort
