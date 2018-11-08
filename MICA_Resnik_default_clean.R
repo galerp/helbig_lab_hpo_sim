@@ -1,6 +1,6 @@
-#MICA STXBP1 
+#Resnik default
 
-#Using default method
+
 
 #Different MICA algorithm experimentation
 library(memoise)
