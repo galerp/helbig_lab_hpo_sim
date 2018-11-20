@@ -8,7 +8,7 @@ source("hpo_dist_helpers.R")
 #STEP 1: Create base and prop table
 ######
 
-pat_table_base <- exp321 %>% 
+pat_table_base <- phenome %>% 
   dplyr::select(famID,HPO) %>% 
   separate_rows(HPO, sep = ";") %>% unique()
 
