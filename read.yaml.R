@@ -9,7 +9,7 @@ if(file.exists("input.yml") == T){
 options(stringsAsFactors = F)
 
 setwd(input.yaml$working_dir)
-exp321 <- read_csv(input.yaml$patient_phenome)
+phenome <- read_csv(input.yaml$patient_phenome)
 allHPOs <- read_csv(input.yaml$hpo_tree)
 hpo_ancs <- read_csv(input.yaml$hpo_ancestor)
 
