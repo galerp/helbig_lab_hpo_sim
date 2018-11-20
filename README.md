@@ -1,4 +1,4 @@
-# hpo_sim_gene
+# HPO_Sim_Gene
 
 Phenotype Genotype correlation using HPO similarity analysis
 
