@@ -1,0 +1,18 @@
+#inputs for Peter
+
+working_dir : /Volumes/helbig_lab/Dropbox/HPO_collaborated/Permutation_Analysis_Manuscript/expanded_freeze_314_v2/        # required
+
+patient_phenome : 314_Expanded_v2.csv    # required
+
+hpo_tree :  HPO_is.a_tree.csv          # required
+hpo_ancestor : HPO_Ancestors_Compressed.csv       # required
+hpo_path : paths_data_frame.csv      # required
+hpo_ancestor_path : HPO_Ancestors_Compressed.csv   # required
+
+variant_file : /Volumes/helbig_lab/Dropbox/Freeze/V7_Cumulative_328_Freeze_csv.csv       # required
+
+algorithm : 1    # Required Default is 1.  1 - Resnik default ; 2 - Resnik average 
+local_IC : Local_IC_314_log2_v2_2018-11-09.csv          # optional
+patient_hpo_base :  Local_Base_per_patient_314_v2_2018-11-09.csv  # optional
+patient_hpo_prop :  Local_Prop_per_patient_314_v2_2018-11-09.csv  # optional
+sim_matrix :  sim_matrix_resnik_avg_314_log2_2018-11-11.csv  # optional 
