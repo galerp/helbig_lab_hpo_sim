@@ -209,7 +209,14 @@ for (i in 1:length(pat_pair)) {
 
 
 
-# P value
+###########
+#STEP 4: Generate P-values for Genes
+##Input:
+#       N_100k - distributions
+#       variant - de novo variants in cohort
+##Output:
+#       gene_count
+###########
 
 famIDs_var <- variant$famID %>% unique 
 famIDs_var <- famIDs_var %>% as.data.frame %>% 
@@ -367,7 +374,7 @@ for (i in 1:nrow(gene_count)) {
 
 
 #########
-#STEP 4: Find the p_value for each gene's similarity
+#Find the p_value for each gene's similarity
 ## using the average, median, and mode similarity,for each gene from gene_count table
 #########
 
@@ -501,10 +508,8 @@ for (i in 1:nrow(gene_count)){
   gene_count[i,7] <- p_average
   gene_count[i,8] <- p_median
   gene_count[i,9] <- p_mod
-  print(paste("...p-value average = ",p_average))
-  print(paste("...p-value median = ",p_median))
-  print(paste("...p-value mode = ",p_mod))
+
 }
 
 
-write.csv(gene_count,"gene_count_cor.csv",row.names = F)
+write.csv(gene_count,"gene_count.csv",row.names = F)
