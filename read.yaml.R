@@ -1,3 +1,6 @@
+library(tidyverse)
+library(dplyr)
+library(memoise)
 
 if(file.exists("input.yml") == T){
   input.yaml <- yaml::read_yaml("input.yml")
