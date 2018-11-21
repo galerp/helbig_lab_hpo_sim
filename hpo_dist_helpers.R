@@ -79,9 +79,9 @@ pat_compare <- function(pat1, pat2)
 }
 
 
-Compare_Cohort=function(cohort_file){
+Compare_Cohort <- function(cohort_file){
   #create output table
-  patients=unique(cohort_file$famID)
+  patients <- unique(cohort_file$famID)
   dimension <- length(unique(patients))
   
   pat_matrix <- as.data.frame(matrix(ncol=dimension, nrow=dimension))
@@ -89,9 +89,9 @@ Compare_Cohort=function(cohort_file){
   names(pat_matrix) <- patients[1:dimension]
   rownames(pat_matrix) <- patients[1:dimension]
   
-  pat_matrix = sapply(1:dimension, function(y) 
+  pat_matrix <- sapply(1:dimension, function(y) 
     (sapply(1:dimension, function(x) pat_matrix[y,x] <- pat_compare(names(pat_matrix)[y],rownames(pat_matrix)[x]))))
-  pat_matrix = as.data.frame(pat_matrix)
+  pat_matrix <- as.data.frame(pat_matrix)
   
   names(pat_matrix) <- patients[1:dimension]
   rownames(pat_matrix) <- patients[1:dimension]
@@ -101,7 +101,7 @@ Compare_Cohort=function(cohort_file){
 
 
 
-sim_pat_draw = function(sim_score, num_pats,num_iterations)  {
+sim_pat_draw <- function(sim_score, num_pats,num_iterations)  {
   
   r_100k = as.data.frame(matrix(nrow = num_iterations, ncol = 3))
   names(r_100k) = c("median","mean", "mode")
@@ -171,46 +171,31 @@ estimate_mode <- function(x){
   d$x[which.max(d$y)]
 }
 
-p_value <- function(x) {
-  foo = ecdf(ax[,1])
-  return(1 - foo(x))
-}
 
  #Functionº : exact_p_av2
 ##Determines p-value for the average
-exact_p <- function(sample_size,sim_score,number_random_draws)
+exact_p <- function(sample_size,similarity_score)
 {
-  #builds matrix with nx random draws with n random individuals, example SCN1A with 21 pairs
-  nx = number_random_draws
-  n = sample_size
-  ax <- as.data.frame(matrix(nrow=nx,ncol=1))
-  names(ax) <- c("random_draw")
-  
-  # if (n > 1){
-  #   for (i in 1:nx) {
-  #     ax[i,1] <- draw_av(n)
-  #   }
-  #}
-  if (n == 3){
-    ax <- n3_100k
-  }
-  if (n == 4){
-    ax <- n4_100k
-  }
-  if (n == 5){
-    ax <- n5_100k
-  }
-  if (n == 7){
-    ax <- n7_100k
-  }
-  if (n == 2){
-    ax <- n2_100k
+ax <- data.frame()
+  if (sample_size == 3){
+    ax <- as.data.frame(n3_100k)
+  } else if (sample_size == 4){
+    ax <- as.data.frame(n4_100k)
+  } else  if (sample_size == 5){
+    ax <- as.data.frame(n5_100k)
+  } else if (sample_size == 7){
+    ax <- as.data.frame(n7_100k)
+  } else if (sample_size == 2){
+    ax <- as.data.frame(n2_100k)
   }
   
   # hist(ax[,1],breaks=40,main= paste("draws n=",n))
   
   #p_value inner-function to determine the significance of a value of x 
-
-  p <- p_value(sim_score)
+p_value <- function(x) {
+  foo = ecdf(ax[,1])
+  return(1 - foo(x))
+}
+  p <- p_value(similarity_score)
   return(p)
 }
