@@ -7,7 +7,6 @@ patient_phenome : /Users/ganesans/Desktop/HPO/Scripts/sample_phenome_1.csv    # 
 hpo_tree :  /Volumes/helbig_lab/Dropbox/HPO_collaborated/Permutation_Analysis_Manuscript/expanded_freeze_314_v2/HPO_is.a_tree.csv          # required
 hpo_ancestor : /Volumes/helbig_lab/Dropbox/HPO_collaborated/Permutation_Analysis_Manuscript/expanded_freeze_314_v2/HPO_Ancestors_Compressed.csv       # required
 hpo_path : /Volumes/helbig_lab/Dropbox/HPO_collaborated/Permutation_Analysis_Manuscript/expanded_freeze_314_v2/paths_data_frame.csv      # required
-hpo_ancestor_path : /Volumes/helbig_lab/Dropbox/HPO_collaborated/Permutation_Analysis_Manuscript/expanded_freeze_314_v2/HPO_Ancestors_Compressed.csv   # required
 
 num_of_iterations : 100000 # required default is 100000
 
