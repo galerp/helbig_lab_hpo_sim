@@ -25,7 +25,7 @@ variant <- read_csv(input.yaml$variant_file)
 
 if( is.null(input.yaml$local_IC)) { 
 
-    source("master.R")
+    source("hpo_dist.R")
 
 } else if(is.null(input.yaml$sim_matrix)) {
   
