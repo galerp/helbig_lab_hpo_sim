@@ -17,7 +17,6 @@ hpo_ancs <- read_csv(input.yaml$hpo_ancestor)
 
   
 path <- read_csv(input.yaml$hpo_path)
-ancest_comp <- read_csv(input.yaml$hpo_ancestor_path)
 
 variant <- read_csv(input.yaml$variant_file)
 
