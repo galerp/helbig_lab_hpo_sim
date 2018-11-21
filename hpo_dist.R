@@ -43,7 +43,7 @@ local_IC <- allHPOs %>%
   replace(., is.na(.),0)
 
 
-write.csv(local_IC, "Local_IC_1.csv",row.names = F)
+write.csv(local_IC, "Local_IC.csv",row.names = F)
 
 #############
 #STEP 3: Simlilarity Analysis - sim_max or sim_av
