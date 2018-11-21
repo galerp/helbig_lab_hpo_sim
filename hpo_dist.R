@@ -67,7 +67,7 @@ memo_mica <- memoise(mica)
 sim_score <- Compare_Cohort(pat_table_base)
 
 
-write.csv(sim_score,"sim_matrix_1.csv",row.names = T)
+write.csv(sim_score,"sim_matrix.csv",row.names = T)
 
 
 ###########
@@ -203,7 +203,7 @@ for (i in 1:nrow(gene_count)) {
 }
 
 
-write.csv(gene_count,"gene_count_1.csv",row.names = F)
+write.csv(gene_count,"gene_count.csv",row.names = F)
 
  stop = Sys.time()
 stop - start
