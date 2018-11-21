@@ -1,16 +1,16 @@
 #inputs for Peter
 
-working_dir : /Users/ganesans/Desktop/HPO/Scripts/     # required
+working_dir : /Users/Desktop/hpo_sim_gene     # required
 
-patient_phenome : /Users/ganesans/Desktop/HPO/Scripts/sample_phenome_1.csv    # required
+patient_phenome : Files/example_phenome.csv    # required
 
-hpo_tree :  /Volumes/helbig_lab/Dropbox/HPO_collaborated/Permutation_Analysis_Manuscript/expanded_freeze_314_v2/HPO_is.a_tree.csv          # required
-hpo_ancestor : /Volumes/helbig_lab/Dropbox/HPO_collaborated/Permutation_Analysis_Manuscript/expanded_freeze_314_v2/HPO_Ancestors_Compressed.csv       # required
-hpo_path : /Volumes/helbig_lab/Dropbox/HPO_collaborated/Permutation_Analysis_Manuscript/expanded_freeze_314_v2/paths_data_frame.csv      # required
+hpo_tree :  Files/HPO_is.a_tree.csv          # required
+hpo_ancestor : Files/HPO_Ancestors_Compressed.csv       # required
+hpo_path : Files/paths_data_frame.csv      # required
 
 num_of_iterations : 100000 # required default is 100000
 
-variant_file : /Volumes/helbig_lab/Dropbox/Freeze/V7_Cumulative_328_Freeze_csv.csv       # required
+variant_file : Files/variant.csv       # required
 
 algorithm : 1    # optional 1 - Resnik default ; 2 - Resnik average 
 local_IC : # /Volumes/helbig_lab/Dropbox/HPO_collaborated/Permutation_Analysis_Manuscript/expanded_freeze_314_v2/Local_IC_314_log2_v2_2018-11-09.csv       # optional
