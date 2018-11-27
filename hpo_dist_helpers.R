@@ -3,6 +3,17 @@ library(tidyverse)
 library(memoise)
 library(dplyr)
 
+
+#########
+#Function - mica (memoised via memo_mica())
+##Find the Most Informative Common Ancestor of 2 HPO terms using Resnik (1995)
+##Input - two HPO terms
+#         hpo1
+#         hpo2
+##Output - 
+#         mica_ic - the information content of the most informative common ancestor (MICA)
+#########
+
 mica <- function(hpo1, hpo2)
 {
   
@@ -24,7 +35,15 @@ mica <- function(hpo1, hpo2)
   
 }
 
-
+#########
+#Function - pat_compare
+##Find the similarity score between two patients via the sim_max or sim_av (PMID: 16776819) method
+##Input - two patient IDs
+#         pat1
+#         pat2
+##Output - 
+#         max_complete - the similarity score between the two patients
+#########
 
 pat_compare <- function(pat1, pat2)
 {
@@ -79,6 +98,16 @@ pat_compare <- function(pat1, pat2)
 }
 
 
+#########
+#Function - Compare_Cohort
+##Computes the similarity scores between every patient in the cohort
+##Input - 
+#         cohort_file - every patient in the cohort with their HPO terms in base format
+#         
+##Output - 
+#         sim_score - a n x n similarity matrix with the sim scores of every patient pair in the cohort
+#########
+
 Compare_Cohort <- function(cohort_file){
   #create output table
   patients <- unique(cohort_file$famID)
@@ -100,6 +129,17 @@ Compare_Cohort <- function(cohort_file){
 }
 
 
+#########
+#Function - sim_pat_draw
+##Randomly select num_pats number of patients N times from sim_score and using their similiarity 
+##scores computes the median, mean and mode score among those patients, creating a distribution
+##Input - 
+#         sim_score - similarity score matrix of all patients in cohort
+#         num_pats - number of patients to randomly draw N times
+#         N - the number of iterations to randomly draw patients to compos the distributions
+##Output - 
+#         r_100k - N iterations of median, mean and mode scores among num_pats number of patients
+#########
 
 sim_pat_draw <- function(sim_score, num_pats,num_iterations)  {
   
@@ -123,11 +163,16 @@ sim_pat_draw <- function(sim_score, num_pats,num_iterations)  {
 }
 
 
-########
-#Function: gene_df
-########
-#Input: gene of interest from the data set
-#Output: return table of famIDs with gene compared to one another (i.e. with their sim scores) 
+#########
+#Function - gene_df
+##Returns a table of the identifiers (famID) and details of all patients with inputted gene
+##Input - 
+#         gene - gene of interest within the cohort
+#         
+##Output - 
+#         df - a table with all patients with inputted gene and the similarity score between all 
+#              said patients
+#########
 
 gene_df <- function(gene)
 {
@@ -157,6 +202,14 @@ gene_df <- function(gene)
 }
 
 
+#########
+#Function - sim_random
+##Randomly selects a patient pair's sim score
+
+##Output - 
+#         sims_rnd - a random sim score from sim_score
+#########
+
 sim_random <- function() {
   random = sample(1:nrow(sim_score),2,replace = FALSE)
   sims_rnd <- sim_score[random[1],random[2]]
@@ -164,17 +217,33 @@ sim_random <- function() {
 }
 
 
-#Function: draw_median
-##Output: returns the mode sim_score in n random individuals 
+#########
+#Function - estimate_mode
+##Estimates the mode of a given vector of number
+##Input - 
+#         x - a vector of numbers
+##Output - 
+#         the estimated mode
+#########
+
 estimate_mode <- function(x){
   d <- density(x)
   d$x[which.max(d$y)]
 }
 
 
- #Functionº : exact_p_av2
-##Determines p-value for the average
-exact_p <- function(sample_size,similarity_score)
+#########
+#Function - exact_p_av2
+## Calculates the p-value of the gene according the similarity scores of the patients
+## with the gene in question and the previously created distribution
+##Input - 
+#         sample_size - number of patients with the gene in question
+#         similarity_score - the 
+##Output - 
+#         p - p-value based on the mean values
+#########
+
+exact_p <- function(sample_size,similarity_score,method)
 {
 ax <- data.frame()
   if (sample_size == 3){
@@ -189,13 +258,15 @@ ax <- data.frame()
     ax <- as.data.frame(n2_100k)
   }
   
-  # hist(ax[,1],breaks=40,main= paste("draws n=",n))
-  
   #p_value inner-function to determine the significance of a value of x 
 p_value <- function(x) {
-  foo = ecdf(ax[,1])
+  
+  if (method == "median") {foo <- ecdf(ax[,1])
+  } else if (method == "mean"){foo <- ecdf(ax[,2])
+  } else if (method == "mode"){foo <- ecdf(ax[,3])
+  }
   return(1 - foo(x))
 }
-  p <- p_value(similarity_score)
+  p <- p_value(similarity_score,method)
   return(p)
 }
