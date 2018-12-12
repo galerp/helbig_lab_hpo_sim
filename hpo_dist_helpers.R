@@ -259,7 +259,7 @@ ax <- data.frame()
   }
   
   #p_value inner-function to determine the significance of a value of x 
-p_value <- function(x) {
+p_value <- function(x, method) {
   
   if (method == "median") {foo <- ecdf(ax[,1])
   } else if (method == "mean"){foo <- ecdf(ax[,2])

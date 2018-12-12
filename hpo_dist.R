@@ -8,11 +8,11 @@ source("hpo_dist_helpers.R")
 #STEP 1: Create base and prop table
 ######
 
-pat_base <- exp321 %>% 
+pat_table_base <- exp321 %>% 
   dplyr::select(famID,HPO) %>% 
   separate_rows(HPO, sep = ";") %>% unique()
 
-pat_prop <- pat_base %>% 
+pat_table_prop <- pat_table_base %>% 
   left_join(hpo_ancs %>% dplyr::select(-definition)) %>% 
   dplyr::select(famID, Ancestors) %>% 
   dplyr::rename(HPO = Ancestors) %>% 
@@ -24,15 +24,15 @@ pat_prop <- pat_base %>%
 #STEP 2: Calculate Local IC
 ######
 
-base_IC <- pat_base %>% 
+base_IC <- pat_table_base %>% 
   dplyr::count(HPO) %>% 
-  mutate(local.Base.freq = n/length(unique(pat_base$famID))) %>% 
+  mutate(local.Base.freq = n/length(unique(pat_table_base$famID))) %>% 
   mutate(Base.local.IC = -log2(local.Base.freq)) %>% 
   dplyr::select(-n)
 
-prop_IC <- pat_prop %>% 
+prop_IC <- pat_table_prop %>% 
   dplyr::count(HPO) %>% 
-  dplyr::mutate(local.Prop.freq = n/length(unique(pat_base$famID))) %>% 
+  dplyr::mutate(local.Prop.freq = n/length(unique(pat_table_base$famID))) %>% 
   dplyr::mutate(Propagated.local.IC = -log10(local.Prop.freq)) %>% 
   dplyr::select(-n)
 
@@ -48,7 +48,7 @@ write.csv(local_IC, "Local_IC.csv",row.names = F)
 #############
 #STEP 3: Simlilarity Analysis - sim_max or sim_av
 ##Input: local_IC
-#        pat_base
+#        pat_table_base
 ############
 ic <- local_IC %>% select(term, Propagated.local.IC)
 hpo_all <- allHPOs %>% select(term, definition)
@@ -64,7 +64,7 @@ memo_mica <- memoise(mica)
 #Run Similarity Analysis on entire cohort 
 ############
 
-sim_score <- Compare_Cohort(pat_base)
+sim_score <- Compare_Cohort(pat_table_base)
 
 
 write.csv(sim_score,"sim_matrix.csv",row.names = T)
@@ -153,7 +153,7 @@ pair_corrected <- gene_df(all_genes$gene[1])
 #Create for all genes
 for (i in 2:nrow(all_genes)){
   temp <- gene_df(all_genes$gene[i])
-  pair_corrected <- pair_corrected %>% row_bind(temp)
+  pair_corrected <- pair_corrected %>% bind_rows(temp)
 }
 
 
