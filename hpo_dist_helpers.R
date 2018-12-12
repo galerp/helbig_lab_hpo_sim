@@ -35,14 +35,14 @@ mica <- function(hpo1, hpo2)
   
 }
 
-pat_table_base <- function(exp321){
+pat_base <- function(exp321){
   pat_table_base <- exp321 %>% 
   dplyr::select(famID,HPO) %>% 
 separate_rows(HPO, sep = ";") %>% unique()
   return(pat_table_base)
 }
 
-pat_table_prop <- function(pat_table_base){
+pat_prop <- function(pat_table_base){
 pat_table_prop <- pat_table_base %>% 
 left_join(hpo_ancs %>% dplyr::select(-definition)) %>% 
 dplyr::select(famID, Ancestors) %>% 
