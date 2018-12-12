@@ -130,7 +130,7 @@ gene_count <- gene_count %>% mutate(gene = gene_x)
 #########
 
 #loop through each gene for p_av, p_med
-gene_stat = gene_compute() 
+gene_stat = gene_compute(gene_count) 
 
 
 write.csv(gene_stat,"gene_count.csv",row.names = F)
