@@ -278,9 +278,9 @@ gene_compute <- function(gene_count){
     #print(paste(gene_count$gene[i]," - number of pairs",gene_count$pairs[i]))
     e1 <- gene_count$n_pats[i] #sample size
     #e2 = gene_count$mode_sim[i] #sim score mod
-    p_average = exact_p(e1, gene_count$av_sim[i])
-    p_median = exact_p(e1,gene_count$median_sim[i])
-    p_mod = exact_p(e1,gene_count$mode_sim[i])
+    p_average = exact_p(e1, gene_count$av_sim[i],"mean")
+    p_median = exact_p(e1,gene_count$median_sim[i],"median")
+    p_mod = exact_p(e1,gene_count$mode_sim[i],"mode")
     gene_count[i,7] <- p_average
     gene_count[i,8] <- p_median
     gene_count[i,9] <- p_mod
