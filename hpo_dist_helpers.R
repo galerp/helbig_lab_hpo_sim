@@ -246,7 +246,7 @@ gene_df <- function(gene)
   return(df)
 }
 
-denovo <- function(variant_sim){
+denovo_calc <- function(variant_sim){
   denovo <- variant_sim %>%  
   filter(AD2_Proband >=10 & 
            0.75 >= Ratio_Proband &
