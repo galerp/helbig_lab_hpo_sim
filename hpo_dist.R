@@ -85,7 +85,7 @@ all_sim <- as.vector(fam_combined$famID[is.na(fam_combined$sim) == FALSE])
 variant_sim <- variant %>% filter(famID %in% all_sim)
 
 
-denovo()
+denovo <- denovo_calc(variant_sim)
 
 #Table of denovos with famID and gene
 tab1 <- denovo %>%  dplyr::select(famID, Gene.refGene) %>% unique
