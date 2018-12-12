@@ -35,6 +35,25 @@ mica <- function(hpo1, hpo2)
   
 }
 
+pat_table_base <- function(exp321){
+  pat_table_base <- exp321 %>% 
+  dplyr::select(famID,HPO) %>% 
+separate_rows(HPO, sep = ";") %>% unique()
+  return(pat_table_base)
+}
+
+pat_table_prop <- function(pat_table_base){
+pat_table_prop <- pat_table_base %>% 
+left_join(hpo_ancs %>% dplyr::select(-definition)) %>% 
+dplyr::select(famID, Ancestors) %>% 
+dplyr::rename(HPO = Ancestors) %>% 
+separate_rows(HPO, sep = ";") %>% 
+#Remove duplicated HPO terms in each patient
+unique
+}
+
+
+
 #########
 #Function - pat_compare
 ##Find the similarity score between two patients via the sim_max or sim_av (PMID: 16776819) method
@@ -98,6 +117,32 @@ pat_compare <- function(pat1, pat2)
 }
 
 
+base_IC <- function(pat_table_base) { 
+ base_IC <- pat_table_base %>% 
+  dplyr::count(HPO) %>% 
+  mutate(local.Base.freq = n/length(unique(pat_table_base$famID))) %>% 
+  mutate(Base.local.IC = -log2(local.Base.freq)) %>% 
+  dplyr::select(-n)
+ return(base_IC)
+}
+
+prop_IC <- function(pat_table_prop) {
+prop_IC <- pat_table_prop %>% 
+  dplyr::count(HPO) %>% 
+  dplyr::mutate(local.Prop.freq = n/length(unique(pat_table_base$famID))) %>% 
+  dplyr::mutate(Propagated.local.IC = -log10(local.Prop.freq)) %>% 
+  dplyr::select(-n)
+return(prop_IC)
+}
+
+local_IC <- function(allHPOs) {
+local_IC <- allHPOs %>% 
+  dplyr::select(term) %>% 
+  full_join(base_IC, by = c('term' = 'HPO')) %>% 
+  full_join(prop_IC, by = c('term' = 'HPO')) %>% 
+  replace(., is.na(.),0)
+return(local_IC)
+}
 #########
 #Function - Compare_Cohort
 ##Computes the similarity scores between every patient in the cohort
@@ -201,7 +246,48 @@ gene_df <- function(gene)
   return(df)
 }
 
+denovo <- function(variant_sim){
+  denovo <- variant_sim %>%  
+  filter(AD2_Proband >=10 & 
+           0.75 >= Ratio_Proband &
+           Ratio_Proband >= 0.25 &
+           Probability <= 70 &
+           Type == "Denovo" & 
+           is.na(esp6500siv2_all) & 
+           is.na(genomicSuperDups) & 
+           is.na(X1000g2015aug_all) & 
+           is.na(ExAC_ALL) )
+  return(denovo)
+}
 
+
+
+gene_compute <- function(gene_count){
+  
+  for (i in 1:nrow(gene_count)) {
+    name_x <- subset(pair_corrected,pair_corrected$gene == as.character(gene_count[i,c("gene")]))
+    gene_count[i,c('n_pats')] <- combine(name_x$fam1, name_x$fam2) %>% unique %>% length()
+    gene_count[i,c('pairs')] <- nrow(name_x)  
+    gene_count[i,c('av_sim')] <- sum(name_x$sim_score)/nrow(name_x)
+    gene_count[i,c('median_sim')] <- median(name_x$sim_score)
+    if (length(name_x$sim_score) > 1) {gene_count[i,c('mode_sim')] <- estimate_mode(name_x$'sim_score')}
+    if (length(name_x$sim_score) == 1) {gene_count[i,c('mode_sim')] <- name_x$sim_score}
+  }
+  
+  for (i in 1:nrow(gene_count)) {
+    #print(paste(gene_count$gene[i]," - number of pairs",gene_count$pairs[i]))
+    e1 <- gene_count$n_pats[i] #sample size
+    #e2 = gene_count$mode_sim[i] #sim score mod
+    p_average = exact_p(e1, gene_count$av_sim[i])
+    p_median = exact_p(e1,gene_count$median_sim[i])
+    p_mod = exact_p(e1,gene_count$mode_sim[i])
+    gene_count[i,7] <- p_average
+    gene_count[i,8] <- p_median
+    gene_count[i,9] <- p_mod
+    
+  }
+  return(gene_count)
+}
 #########
 #Function - sim_random
 ##Randomly selects a patient pair's sim score
