@@ -117,7 +117,7 @@ pat_compare <- function(pat1, pat2)
 }
 
 
-base_IC <- function(pat_table_base) { 
+base_calc_IC <- function(pat_table_base) { 
  base_IC <- pat_table_base %>% 
   dplyr::count(HPO) %>% 
   mutate(local.Base.freq = n/length(unique(pat_table_base$famID))) %>% 
@@ -126,7 +126,7 @@ base_IC <- function(pat_table_base) {
  return(base_IC)
 }
 
-prop_IC <- function(pat_table_prop) {
+prop_calc_IC <- function(pat_table_prop) {
 prop_IC <- pat_table_prop %>% 
   dplyr::count(HPO) %>% 
   dplyr::mutate(local.Prop.freq = n/length(unique(pat_table_base$famID))) %>% 
@@ -135,7 +135,7 @@ prop_IC <- pat_table_prop %>%
 return(prop_IC)
 }
 
-local_IC <- function(allHPOs) {
+local_calc_IC <- function(allHPOs) {
 local_IC <- allHPOs %>% 
   dplyr::select(term) %>% 
   full_join(base_IC, by = c('term' = 'HPO')) %>% 
