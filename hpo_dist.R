@@ -105,10 +105,8 @@ pair_corrected <- gene_df(all_genes$gene[1])
 
 #Create for all genes
 for (i in 2:nrow(all_genes)){
-  print(i)
-  print(all_genes$gene[i])
   temp <- gene_df(all_genes$gene[i])
-  pair_corrected %>% bind_rows(temp)
+  pair_corrected <- pair_corrected %>% bind_rows(temp)
 }
 
 
