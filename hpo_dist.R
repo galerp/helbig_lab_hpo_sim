@@ -8,16 +8,16 @@ source("hpo_dist_helpers.R")
 #STEP 1: Create base and prop table
 ######
 
-pat_table_base() 
-pat_table_prop()
+pat_table_base <- pat_base(exp321) 
+pat_table_prop <- pat_prop(pat_table_base)
 
 ######
 #STEP 2: Calculate Local IC
 ######
 
-base_IC()
-prop_IC()
-local_IC()
+base_IC <- base_calc_IC(pat_table_base)
+prop_IC <- prop_calc_IC(pat_table_prop)
+local_IC <- local_calc_IC(allHPOs)
 
 write.csv(local_IC, "Local_IC.csv",row.names = F)
 
