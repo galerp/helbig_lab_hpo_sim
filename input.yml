@@ -13,7 +13,7 @@ num_of_iterations : 100000 # required default is 100000
 variant_file : Files/variant.csv       # required
 
 algorithm : 1    # optional 1 - Resnik default ; 2 - Resnik average 
-local_IC : # /Volumes/helbig_lab/Dropbox/HPO_collaborated/Permutation_Analysis_Manuscript/expanded_freeze_314_v2/Local_IC_314_log2_v2_2018-11-09.csv       # optional
-patient_hpo_base : #  /Volumes/helbig_lab/Dropbox/HPO_collaborated/Permutation_Analysis_Manuscript/expanded_freeze_314_v2/Local_Base_per_patient_314_v2_2018-11-09.csv  # optional
-patient_hpo_prop : # /Volumes/helbig_lab/Dropbox/HPO_collaborated/Permutation_Analysis_Manuscript/expanded_freeze_314_v2/Local_Prop_per_patient_314_v2_2018-11-09.csv  # optional
-sim_matrix : #  /Volumes/helbig_lab/Dropbox/HPO_collaborated/Permutation_Analysis_Manuscript/expanded_freeze_314_v2/sim_matrix_resnik_avg_314_log2_2018-11-11.csv  # optional 
+local_IC : # optional
+patient_hpo_base : # optional
+patient_hpo_prop : # optional
+sim_matrix : # optional 
