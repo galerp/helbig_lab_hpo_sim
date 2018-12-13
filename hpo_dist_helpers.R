@@ -130,7 +130,7 @@ prop_calc_IC <- function(pat_table_prop) {
 prop_IC <- pat_table_prop %>% 
   dplyr::count(HPO) %>% 
   dplyr::mutate(local.Prop.freq = n/length(unique(pat_table_base$famID))) %>% 
-  dplyr::mutate(Propagated.local.IC = -log10(local.Prop.freq)) %>% 
+  dplyr::mutate(Propagated.local.IC = -log2(local.Prop.freq)) %>% 
   dplyr::select(-n)
 return(prop_IC)
 }
