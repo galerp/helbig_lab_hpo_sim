@@ -1,12 +1,13 @@
 library(tidyverse)
 library(memoise)
-library(dplyr)
 
 start <- Sys.time()
 source("hpo_dist_helpers.R")
 ######
 #STEP 1: Create base and prop table
 ######
+
+exp321 <- exp321 %>% mutate(famID = gsub("-","_", famID))
 
 pat_table_base <- pat_base(exp321) 
 pat_table_prop <- pat_prop(pat_table_base)
@@ -67,6 +68,8 @@ n7_100k <- sim_pat_draw(sim_score, 7,num_iterations)
 ###########
 
 names(variant)[1] <- "famID"
+variant <- variant %>% mutate(famID = gsub("-","_", famID))
+
 famIDs_var <- variant$famID %>% unique  %>% as.data.frame %>% 
   dplyr::rename('famID' = '.') %>% dplyr::mutate(var = "variant")
 
