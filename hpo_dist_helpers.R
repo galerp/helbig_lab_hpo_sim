@@ -1,7 +1,6 @@
 
 library(tidyverse)
 library(memoise)
-library(dplyr)
 
 
 #########
