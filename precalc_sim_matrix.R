@@ -93,7 +93,7 @@ gene_count <- gene_count %>% mutate(gene = gene_x)
 gene_stat = gene_compute(gene_count) 
 
 
-write.csv(gene_stat,"gene_count.csv",row.names = F)
+write.csv(gene_stat,paste0(input.yaml$output_dir,"/gene_count.csv"),row.names = F)
 
 stop = Sys.time()
 stop - start
