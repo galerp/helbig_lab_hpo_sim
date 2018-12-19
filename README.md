@@ -1,7 +1,7 @@
 # HPO_Sim_Gene
 
 Using the Human Phenotype Ontology (HPO) and a cohort of patients annotated with HPO terms and VCF files, these scripts find phenotype-genotype correlations. This can aid in gene discovery, treatment, and a better understanding of genes' phenotypic variability.
-First, using HPO terms similarity scores are found for every patient pair. Next, genes with potentially causitive variants in multiple patients are extracted from the vcf and the median similarity scores among each of these patients is calculated.  Using permutation analysis of median similarity scores, p-values are assigned to each of these genes. A lower p-value potentially indicates a causitive gene.
+First, using HPO terms similarity scores are found for every patient pair. Next, genes with potentially causitive variants in multiple patients are extracted from the VCF and the median similarity scores among each of these patients is calculated.  Using permutation analysis of median similarity scores, p-values are assigned to each of these genes. A lower p-value potentially indicates a causitive gene.
 
  ### Requirements:
   
