@@ -1,6 +1,6 @@
 #inputs for Peter
 
-working_dir : /Users/Desktop/hpo_sim_gene     # required
+output_dir : /Users/Desktop/hpo_sim_gene     # required
 
 patient_phenome : Files/example_phenome.csv    # required
 
