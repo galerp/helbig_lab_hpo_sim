@@ -20,7 +20,7 @@ base_IC <- base_calc_IC(pat_table_base)
 prop_IC <- prop_calc_IC(pat_table_prop)
 local_IC <- local_calc_IC(allHPOs)
 
-write.csv(local_IC, paste0(input.yaml$output_dir/,"Local_IC.csv"),row.names = F)
+write.csv(local_IC, paste0(input.yaml$output_dir,"/Local_IC.csv"),row.names = F)
 
 #############
 #STEP 3: Simlilarity Analysis - sim_max or sim_av
@@ -42,7 +42,7 @@ memo_mica <- memoise(mica)
 sim_score <- Compare_Cohort(pat_table_base)
 
 
-write.csv(sim_score,paste0(input.yaml$output_dir/,"sim_matrix.csv"),row.names = T)
+write.csv(sim_score,paste0(input.yaml$output_dir,"/sim_matrix.csv"),row.names = T)
 
 
 ###########
@@ -134,7 +134,7 @@ gene_count <- gene_count %>% mutate(gene = gene_x)
 gene_stat = gene_compute(gene_count) 
 
 
-write.csv(gene_stat,paste0(input.yaml$output_dir/,"gene_count.csv"),row.names = F)
+write.csv(gene_stat,paste0(input.yaml$output_dir,"/gene_count.csv"),row.names = F)
 
 stop = Sys.time()
 stop - start
