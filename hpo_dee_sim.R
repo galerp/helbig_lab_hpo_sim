@@ -34,7 +34,6 @@ if(is.null(input.yaml$hpo_ancestor) == F){
 
 options(stringsAsFactors = F)
 
-setwd(input.yaml$working_dir)
 
 if(is.null(input.yaml$hpo_path) == F){
   path <- read_csv(input.yaml$hpo_path)
