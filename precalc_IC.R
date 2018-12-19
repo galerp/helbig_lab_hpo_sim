@@ -22,7 +22,7 @@ memo_mica <- memoise(mica)
 sim_score <- Compare_Cohort(pat_table_base)
 
 
-write.csv(sim_score,"sim_matrix.csv",row.names = T)
+write.csv(sim_score,paste0(input.yaml$output_dir,"/sim_matrix.csv"),row.names = T)
 
 
 ###########
@@ -114,7 +114,7 @@ gene_count <- gene_count %>% mutate(gene = gene_x)
 gene_stat = gene_compute(gene_count) 
 
 
-write.csv(gene_stat,"gene_count.csv",row.names = F)
+write.csv(gene_stat,paste0(input.yaml$output_dir,"/gene_count.csv"),row.names = F)
 
 stop = Sys.time()
 stop - start
