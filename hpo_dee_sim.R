@@ -9,6 +9,11 @@ if(file.exists("input.yml") == T){
   break;
 }
 
+if(is.null(input.yaml$output_dir) == T){
+  message(' Please mention the Field output_dir in input config file - Cant Proceed without that \n')
+  break;
+}
+
 if(is.null(input.yaml$patient_phenome) == F){
   exp321 <- read_csv(input.yaml$patient_phenome)
 }else{
