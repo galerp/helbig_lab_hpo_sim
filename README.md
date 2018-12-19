@@ -18,7 +18,7 @@ First, using HPO terms similarity scores are found for every patient pair. Next,
  
  ### Running the tests
 
-There are test files available here: [Files] (https://github.com/galerp/hpo_sim_gene/tree/master/Files). Ensure that these files are linked appropriately in the [config File](https://github.com/galerp/hpo_sim_gene/blob/master/input.yml) as such:
+There are test files available here: [Files] (https://github.com/galerp/hpo_sim_gene/tree/master/Files). Ensure that these files are linked appropriately in the [config file](https://github.com/galerp/hpo_sim_gene/blob/master/input.yml) as such:
 ```
 patient_phenome : Files/example_phenome.csv  
 
