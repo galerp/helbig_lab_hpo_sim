@@ -11,14 +11,14 @@ First, using HPO terms similarity scores are found for every patient pair. Next,
  
  ### Steps to Run:
 
- * Clone the repository, modify the [Config File](https://github.com/galerp/hpo_sim_gene/blob/master/input.yml).
+ * Clone the repository, modify the [config File](https://github.com/galerp/hpo_sim_gene/blob/master/input.yml).
 
- * After modifying the config file, source this [R file](https://github.com/galerp/hpo_sim_gene/blob/master/hpo_dee_sim.R), make sure the config file is in the same working directory.
+ * After modifying the config file, source this [R file](https://github.com/galerp/hpo_sim_gene/blob/master/hpo_dee_sim.R) and make sure the config file is in the same working directory.
  
  
  ### Running the tests
 
-There are test files available here: [Files] (https://github.com/galerp/hpo_sim_gene/tree/master/Files). Ensure that these files are linked appropriately in the [Config File](https://github.com/galerp/hpo_sim_gene/blob/master/input.yml) as such:
+There are test files available here: [Files] (https://github.com/galerp/hpo_sim_gene/tree/master/Files). Ensure that these files are linked appropriately in the [config File](https://github.com/galerp/hpo_sim_gene/blob/master/input.yml) as such:
 ```
 patient_phenome : Files/example_phenome.csv  
 
