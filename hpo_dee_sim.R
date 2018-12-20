@@ -5,19 +5,19 @@ library(memoise)
 if(file.exists("input.yml") == T){
   input.yaml <- yaml::read_yaml("input.yml")
 }else{
-  message('Input YAML not found. Please Save the TAML file in current Directory\n')
+  message('\n Input YAML not found. Please Save the TAML file in current Directory \n')
   break;
 }
 
 if(is.null(input.yaml$output_dir) == T){
-  message(' Please mention the Field output_dir in input config file - Cant Proceed without that \n')
+  message('\n Please mention the Field output_dir in input config file - Cant Proceed without that \n')
   break;
 }
 
 if(is.null(input.yaml$patient_phenome) == F){
   exp321 <- read_csv(input.yaml$patient_phenome)
 }else{
-  message(' Please mention the Patient Phenome File in the specified format - Cant Proceed without that \n')
+  message('\n Please mention the Patient Phenome File in the specified format - Cant Proceed without that \n')
   break;
 }
 
@@ -25,7 +25,7 @@ if(is.null(input.yaml$patient_phenome) == F){
 if(is.null(input.yaml$hpo_tree) == F){
   allHPOs <- read_csv(input.yaml$hpo_tree)
 }else{
-  message(' Please mention the HPO tree File (Should be able to get it from here "link to be added")- Cant Proceed without that \n')
+  message('\n  Please mention the HPO tree File (Should be able to get it from here "link to be added")- Cant Proceed without that \n')
   break;
 }
 
@@ -33,7 +33,7 @@ if(is.null(input.yaml$hpo_tree) == F){
 if(is.null(input.yaml$hpo_ancestor) == F){
   hpo_ancs <- read_csv(input.yaml$hpo_ancestor)
 }else{
-  message(' Please mention the HPO Ancestor File (Should be able to get it from here "link to be added")- Cant Proceed without that \n')
+  message('\n  Please mention the HPO Ancestor File (Should be able to get it from here "link to be added")- Cant Proceed without that \n')
   break;
 }
 
@@ -43,7 +43,7 @@ options(stringsAsFactors = F)
 if(is.null(input.yaml$hpo_path) == F){
   path <- read_csv(input.yaml$hpo_path)
 }else{
-  message(' Please mention the HPO Path File (Should be able to get it from here "link to be added")- Cant Proceed without that \n')
+  message('\n  Please mention the HPO Path File (Should be able to get it from here "link to be added")- Cant Proceed without that \n')
   break;
 }
 
@@ -51,21 +51,24 @@ if(is.null(input.yaml$hpo_path) == F){
 if(is.null(input.yaml$variant_file) == F){
   variant <- read_csv(input.yaml$variant_file)
 }else{
-  message(' Please mention the Variants File in the specified format - Cant Proceed without that \n')
+  message('\n  Please mention the Variants File in the specified format - Cant Proceed without that \n')
   break;
 }
 
 
-
 if( is.null(input.yaml$local_IC)) { 
+ message("\n  The minimum required input files were read. The program will run entirely, generating these files : computing the Information Content, Similarity Matrix and Permutation Analysis \n  \n ")
   source("hpo_dist.R")
 } else if(is.null(input.yaml$sim_matrix)) {
   
+message("\n  The minimum required input files along with the Local_IC, hpo_base and hpo_prop  were read. The program will only run the steps for  generating these files : computing Similarity Matrix and Permutation Analysis \n  \n  ")
   local_IC <- read_csv(input.yaml$local_IC)
   pat_table_base <- read_csv(input.yaml$patient_hpo_base)
   pat_table_prop <- read_csv(input.yaml$patient_hpo_prop)
   source("precalc_IC.R")
 } else {
+ 
+message("\n  The minimum required input files along with the Local_IC, hpo_base, hpo_prop and sim_matrix  were read. The program will only run the steps for  generating the files from Permutation Analysis \n  \n ")
   local_IC <- read_csv(input.yaml$local_IC)
   pat_table_base <- read_csv(input.yaml$patient_hpo_base)
   pat_table_prop <- read_csv(input.yaml$patient_hpo_prop)

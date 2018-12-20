@@ -6,6 +6,7 @@ source("hpo_dist_helpers.R")
 ######
 #STEP 1: Create base and prop table
 ######
+message(" \n Step 1 is executed: Hpo Base and Prop Table is created \n \n ")
 
 exp321 <- exp321 %>% mutate(famID = gsub("-","_", famID))
 
@@ -15,6 +16,7 @@ pat_table_prop <- pat_prop(pat_table_base)
 ######
 #STEP 2: Calculate Local IC
 ######
+message("\n  Step 1 is done. Calculating Local Information Content \n  \n ")
 
 base_IC <- base_calc_IC(pat_table_base)
 prop_IC <- prop_calc_IC(pat_table_prop)
@@ -25,6 +27,9 @@ write.csv(local_IC, paste0(input.yaml$output_dir,"/Local_IC.csv"),row.names = F)
 #############
 #STEP 3: Simlilarity Analysis - sim_max or sim_av
 ############
+
+message("\n  Local_IC file is written. Calculating the similarity_matrix \n  \n ")
+
 ic <- local_IC[,c("term","Propagated.local.IC")]
 hpo_all <- allHPOs[,c("term","definition")]
 ic2 <- merge(ic,hpo_all,by='term',all.x=TRUE,all.y=FALSE)
@@ -50,6 +55,7 @@ write.csv(sim_score,paste0(input.yaml$output_dir,"/sim_matrix.csv"),row.names = 
 
 ###########
 
+message("\n  Sim score file is written. Permutation Analysis is to be followed \n  \n ")
 rownames(sim_score) = names(sim_score)
 
 
@@ -66,6 +72,8 @@ n7_100k <- sim_pat_draw(sim_score, 7,num_iterations)
 #STEP 4: Generate P-values for Genes
 
 ###########
+
+message("\n Permutation is done. p-value for the genes is calculated \n \n  ")
 
 names(variant)[1] <- "famID"
 variant <- variant %>% mutate(famID = gsub("-","_", famID))
@@ -135,7 +143,7 @@ gene_stat = gene_compute(gene_count)
 
 
 write.csv(gene_stat,paste0(input.yaml$output_dir,"/gene_count.csv"),row.names = F)
-
+message("\n  The Entire script is now run successfully. Please find the Final output file gene_count.csv in the output directory \n ")
 stop = Sys.time()
 stop - start
 
