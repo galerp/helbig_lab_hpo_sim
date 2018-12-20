@@ -13,7 +13,7 @@ num_of_iterations : 100000 # required default is 100000
 variant_file : Files/variant.csv       # required
 
 algorithm : 1    # optional 1 - Resnik default ; 2 - Resnik average 
-local_IC : # optional
-patient_hpo_base : # optional
-patient_hpo_prop : # optional
-sim_matrix : # optional 
+local_IC : # optional 
+patient_hpo_base : # optional - Specify this file if local_IC is given
+patient_hpo_prop : # optional - Specify this file if local_IC is given
+sim_matrix : # optional - - Specify this file if local_IC and patient_hpo base and prop are given
