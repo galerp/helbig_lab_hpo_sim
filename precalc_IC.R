@@ -5,6 +5,8 @@ start <- Sys.time()
 source("hpo_dist_helpers.R")
 
 
+message("\n  Local_IC file is read. Calculating the similarity_matrix \n  \n ")
+
 ic <- local_IC[,c("term","Propagated.local.IC")]
 hpo_all <- allHPOs[,c("term","definition")]
 ic2 <- merge(ic,hpo_all,by='term',all.x=TRUE,all.y=FALSE)
@@ -30,6 +32,7 @@ write.csv(sim_score,paste0(input.yaml$output_dir,"/sim_matrix.csv"),row.names = 
 
 ###########
 
+message("\n  Sim score file is written. Permutation Analysis is to be followed \n  \n ")
 rownames(sim_score) = names(sim_score)
 
 
@@ -46,6 +49,8 @@ n7_100k <- sim_pat_draw(sim_score, 7,num_iterations)
 #STEP 4: Generate P-values for Genes
 
 ###########
+
+message("\n Permutation is done. p-value for the genes is calculated \n \n  ")
 
 names(variant)[1] <- "famID"
 variant <- variant %>% mutate(famID = gsub("-","_", famID))
@@ -115,7 +120,6 @@ gene_stat = gene_compute(gene_count)
 
 
 write.csv(gene_stat,paste0(input.yaml$output_dir,"/gene_count.csv"),row.names = F)
-
+message("\n  The Entire script is now run successfully. Please find the Final output file gene_count.csv in the output directory \n ")
 stop = Sys.time()
 stop - start
-
