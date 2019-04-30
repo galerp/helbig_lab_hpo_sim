@@ -15,7 +15,10 @@ First, using HPO terms similarity scores are found for every patient pair. Next,
  
  * In the [config file](https://github.com/galerp/hpo_sim_gene/blob/master/input.yml) mention the the field `output_dir`, this is where your output files would be written to. 
 
- * Source this [R file](https://github.com/galerp/hpo_sim_gene/blob/master/hpo_dee_sim.R) and make sure the config file is in the same working directory.
+ * Run [R file](https://github.com/galerp/hpo_sim_gene/blob/master/hpo_dee_sim.R), specifying the YAML config file using the `--input` flag .
+```
+~/Rscript hpo_dee_sim.R --input /path_to/input.yml
+```
  
  
  ### Running the tests
