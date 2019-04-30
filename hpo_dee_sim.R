@@ -2,12 +2,29 @@
 library(tidyverse)
 library(memoise)
 
-if(file.exists("input.yml") == T){
-  input.yaml <- yaml::read_yaml("input.yml")
-}else{
-  message('\n Input YAML not found. Please Save the TAML file in current Directory \n')
-  break;
+capture <- commandArgs(trailingOnly = TRUE)
+
+opt1 = list(make_option(c("--input"), type = "character", default = "input.yml", dest = "input"))
+
+
+user_input <- function(name, argv) {
+  return(name %in% names(argv))
 }
+
+argv <- parse_args(OptionParser(option_list = opt1))
+
+if (user_input("input", argv)) {
+  input = argv$input 
+    if(file.exists(input) == T){
+      input.yaml <- yaml::read_yaml(input)
+    }else{
+      message('\n Input YAML not found \n')
+      break;
+    }
+  } else {
+  message('Cannot proceed without input yaml file. Please use "--input" flag .\n')
+}
+
 
 if(is.null(input.yaml$output_dir) == T){
   message('\n Please mention the Field output_dir in input config file - Cant Proceed without that \n')
