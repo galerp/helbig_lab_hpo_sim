@@ -1,4 +1,4 @@
-
+#Necessary libraries
 library(tidyverse)
 library(memoise)
 
@@ -17,10 +17,8 @@ mica <- function(hpo1, hpo2)
 {
   
   
-  # path1_unique <- path %>% dplyr::filter(Term == hpo1)
   path1_unique <- path[which(path$Term == hpo1),]
   
-  # path2_unique <- path %>% dplyr::filter(Term == hpo2)
   path2_unique <- path[which(path$Term == hpo2),]
   
   joint1 <- path1_unique %>% inner_join(path2_unique, by = 'Counter1') 
