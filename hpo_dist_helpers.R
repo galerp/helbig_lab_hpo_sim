@@ -35,18 +35,19 @@ mica <- function(hpo1, hpo2)
 pat_base <- function(exp321){
   pat_table_base <- exp321 %>% 
   dplyr::select(famID,HPO) %>% 
-separate_rows(HPO, sep = ";") %>% unique()
+  separate_rows(HPO, sep = ";") %>% unique()
   return(pat_table_base)
 }
 
 pat_prop <- function(pat_table_base){
-pat_table_prop <- pat_table_base %>% 
-left_join(hpo_ancs %>% dplyr::select(-definition)) %>% 
-dplyr::select(famID, Ancestors) %>% 
-dplyr::rename(HPO = Ancestors) %>% 
-separate_rows(HPO, sep = ";") %>% 
-#Remove duplicated HPO terms in each patient
-unique
+  pat_table_prop <- pat_table_base %>% 
+  left_join(hpo_ancs %>% dplyr::select(-definition)) %>% 
+  dplyr::select(famID, Ancestors) %>% 
+  dplyr::rename(HPO = Ancestors) %>% 
+  separate_rows(HPO, sep = ";") %>% 
+  #Remove duplicated HPO terms in each patient
+  unique %>%
+  return(pat_table_prop)
 }
 
 
@@ -63,9 +64,8 @@ unique
 
 pat_compare <- function(pat1, pat2)
 {
-  # hpo_pat1 <- pat_table_base %>% dplyr::filter(famID == pat1)
-  # hpo_pat2 <- pat_table_base %>% dplyr::filter(famID == pat2)
-  
+ if(input.yaml$algorithm == 1 ){ 
+   
   hpo_pat1 <- pat_table_base[which(pat_table_base$famID == pat1),]
   hpo_pat2 <- pat_table_base[which(pat_table_base$famID == pat2),]
   
@@ -90,23 +90,19 @@ pat_compare <- function(pat1, pat2)
       
     }
   }
-  if(input.yaml$algorithm == 1 ){ 
     
     max_col <- apply(ic_matrix,2,max)
     
     max_row <- apply(ic_matrix,1,max)
     
     max_complete <- sum(max_col,max_row)/2
-  } else{
-    
-    max_col <- apply(ic_matrix,2,max)
-    max_col <- max_col/length(ic_matrix) #KEY DIFFERENCE IN THIS ALGORITHM
-    
-    max_row <- apply(ic_matrix,1,max)
-    max_row <- max_row/nrow(ic_matrix)
-    
-    
-    max_complete <- sum(max_col,max_row)/2
+  } else{ #using algorithm 2 - Cube
+
+      pat1 <- pat_table_prop %>% filter(famID == pat1) 
+      pat2 <- pat_table_prop %>% filter(famID == pat2)   
+      
+      pat_comp <- pat1 %>% inner_join(pat2, by = c("HPO","Propagated.local.IC"))
+      max_complete <- sum(pat_comp$Propagated.local.IC)
   }
   
   
