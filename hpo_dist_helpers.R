@@ -113,8 +113,8 @@ pat_compare <- function(pat1, pat2)
 base_calc_IC <- function(pat_table_base) { 
  base_IC <- pat_table_base %>% 
   dplyr::count(HPO) %>% 
-  mutate(local.Base.freq = n/length(unique(pat_table_base$famID))) %>% 
-  mutate(Base.local.IC = -log2(local.Base.freq)) %>% 
+  dplyr::mutate(local.Base.freq = n/length(unique(pat_table_base$famID))) %>% 
+  dplyr::mutate(Base.local.IC = -log2(local.Base.freq)) %>% 
   dplyr::select(-n)
  return(base_IC)
 }
@@ -179,7 +179,7 @@ Compare_Cohort <- function(cohort_file){
 #         r_100k - N iterations of median, mean and mode scores among num_pats number of patients
 #########
 
-sim_pat_draw <- function(sim_score, num_pats,num_iterations)  {
+sim_pat_draw <- function(sim_score, num_pats, num_iterations)  {
   
   r_100k = as.data.frame(matrix(nrow = num_iterations, ncol = 3))
   names(r_100k) = c("median","mean", "mode")
