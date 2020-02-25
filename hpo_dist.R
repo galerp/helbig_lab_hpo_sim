@@ -6,11 +6,9 @@ source("hpo_dist_helpers.R")
 ######
 #STEP 1: Create base and prop table
 ######
-message(" \n Step 1 is executed: Hpo Base and Prop Table is created \n \n ")
+message(" \n Step 1 is executed: HPO Base and Prop Table is created \n \n ")
 
-exp321 <- exp321 %>% mutate(famID = gsub("-","_", famID))
-
-pat_table_base <- pat_base(exp321) 
+pat_table_base <- pat_base(pat_phen) 
 pat_table_prop <- pat_prop(pat_table_base)
 
 ######
@@ -25,7 +23,7 @@ local_IC <- local_calc_IC(allHPOs)
 write.csv(local_IC, paste0(input.yaml$output_dir,"/Local_IC.csv"),row.names = F)
 
 #############
-#STEP 3: Simlilarity Analysis - sim_max or sim_av
+#STEP 3: Simlilarity Analysis - sim_max or sim_cm
 ############
 
 message("\n  Local_IC file is written. Calculating the similarity_matrix \n  \n ")
@@ -52,7 +50,6 @@ write.csv(sim_score,paste0(input.yaml$output_dir,"/sim_matrix.csv"),row.names = 
 
 ###########
 #STEP 4: Create Distribution of Similarity Scores
-
 ###########
 
 message("\n  Sim score file is written. Permutation Analysis is to be followed \n  \n ")
@@ -69,11 +66,10 @@ n7_100k <- sim_pat_draw(sim_score, 7,num_iterations)
 
 
 ###########
-#STEP 4: Generate P-values for Genes
-
+#STEP 5: Generate P-values for Semantic Similarity within
 ###########
 
-message("\n Permutation is done. p-value for the genes is calculated \n \n  ")
+message("\n Permutation is done. p-value for gene to phenotype is calculating \n \n  ")
 
 names(variant)[1] <- "famID"
 variant <- variant %>% mutate(famID = gsub("-","_", famID))
@@ -143,6 +139,20 @@ gene_stat = gene_compute(gene_count)
 
 
 write.csv(gene_stat,paste0(input.yaml$output_dir,"/gene_count.csv"),row.names = F)
+
+
+message("\n p-value for gene to phenotype has been calculated and saved in file "gene_count.csv \n \n  ")
+
+###########
+#STEP 5: Generate P-values for Genes
+###########
+
+
+message("\n Generating p-value for gene using the Denovolyzer \n \n  ")
+
+
+
+
 message("\n  The Entire script is now run successfully. Please find the Final output file gene_count.csv in the output directory \n ")
 stop = Sys.time()
 stop - start
