@@ -32,7 +32,7 @@ if(is.null(input.yaml$output_dir) == T){
 }
 
 if(is.null(input.yaml$patient_phenome) == F){
-  exp321 <- read_csv(input.yaml$patient_phenome)
+  pat_phen <- read_csv(input.yaml$patient_phenome)
 }else{
   message('\n Please mention the Patient Phenome File in the specified format - Cant Proceed without that \n')
   break;
@@ -69,6 +69,12 @@ if(is.null(input.yaml$variant_file) == F){
   variant <- read_csv(input.yaml$variant_file)
 }else{
   message('\n  Please mention the Variants File in the specified format - Cant Proceed without that \n')
+  break;
+}
+
+
+if(input.yaml$algorithm !=1 & input.yaml$algorithm !=2){
+  message('\n Please correct algorithm choice. Options include: 1 (Resnik; default) and 2 (Cube) - Cant Proceed with current entry \n')
   break;
 }
 
