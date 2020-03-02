@@ -1,4 +1,4 @@
-
+#Necessary libraries
 library(tidyverse)
 library(memoise)
 
@@ -17,10 +17,8 @@ mica <- function(hpo1, hpo2)
 {
   
   
-  # path1_unique <- path %>% dplyr::filter(Term == hpo1)
   path1_unique <- path[which(path$Term == hpo1),]
   
-  # path2_unique <- path %>% dplyr::filter(Term == hpo2)
   path2_unique <- path[which(path$Term == hpo2),]
   
   joint1 <- path1_unique %>% inner_join(path2_unique, by = 'Counter1') 
@@ -37,18 +35,19 @@ mica <- function(hpo1, hpo2)
 pat_base <- function(exp321){
   pat_table_base <- exp321 %>% 
   dplyr::select(famID,HPO) %>% 
-separate_rows(HPO, sep = ";") %>% unique()
+  separate_rows(HPO, sep = ";") %>% unique()
   return(pat_table_base)
 }
 
 pat_prop <- function(pat_table_base){
-pat_table_prop <- pat_table_base %>% 
-left_join(hpo_ancs %>% dplyr::select(-definition)) %>% 
-dplyr::select(famID, Ancestors) %>% 
-dplyr::rename(HPO = Ancestors) %>% 
-separate_rows(HPO, sep = ";") %>% 
-#Remove duplicated HPO terms in each patient
-unique
+  pat_table_prop <- pat_table_base %>% 
+  left_join(hpo_ancs %>% dplyr::select(-definition)) %>% 
+  dplyr::select(famID, Ancestors) %>% 
+  dplyr::rename(HPO = Ancestors) %>% 
+  separate_rows(HPO, sep = ";") %>% 
+  #Remove duplicated HPO terms in each patient
+  unique %>%
+  return(pat_table_prop)
 }
 
 
@@ -65,9 +64,8 @@ unique
 
 pat_compare <- function(pat1, pat2)
 {
-  # hpo_pat1 <- pat_table_base %>% dplyr::filter(famID == pat1)
-  # hpo_pat2 <- pat_table_base %>% dplyr::filter(famID == pat2)
-  
+ if(input.yaml$algorithm == 1 ){ 
+   
   hpo_pat1 <- pat_table_base[which(pat_table_base$famID == pat1),]
   hpo_pat2 <- pat_table_base[which(pat_table_base$famID == pat2),]
   
@@ -92,23 +90,19 @@ pat_compare <- function(pat1, pat2)
       
     }
   }
-  if(input.yaml$algorithm == 1 ){ 
     
     max_col <- apply(ic_matrix,2,max)
     
     max_row <- apply(ic_matrix,1,max)
     
     max_complete <- sum(max_col,max_row)/2
-  } else{
-    
-    max_col <- apply(ic_matrix,2,max)
-    max_col <- max_col/length(ic_matrix) #KEY DIFFERENCE IN THIS ALGORITHM
-    
-    max_row <- apply(ic_matrix,1,max)
-    max_row <- max_row/nrow(ic_matrix)
-    
-    
-    max_complete <- sum(max_col,max_row)/2
+  } else{ #using algorithm 2 - Cube
+
+      pat1 <- pat_table_prop %>% filter(famID == pat1) 
+      pat2 <- pat_table_prop %>% filter(famID == pat2)   
+      
+      pat_comp <- pat1 %>% inner_join(pat2, by = c("HPO","Propagated.local.IC"))
+      max_complete <- sum(pat_comp$Propagated.local.IC)
   }
   
   
@@ -119,8 +113,8 @@ pat_compare <- function(pat1, pat2)
 base_calc_IC <- function(pat_table_base) { 
  base_IC <- pat_table_base %>% 
   dplyr::count(HPO) %>% 
-  mutate(local.Base.freq = n/length(unique(pat_table_base$famID))) %>% 
-  mutate(Base.local.IC = -log2(local.Base.freq)) %>% 
+  dplyr::mutate(local.Base.freq = n/length(unique(pat_table_base$famID))) %>% 
+  dplyr::mutate(Base.local.IC = -log2(local.Base.freq)) %>% 
   dplyr::select(-n)
  return(base_IC)
 }
@@ -185,7 +179,7 @@ Compare_Cohort <- function(cohort_file){
 #         r_100k - N iterations of median, mean and mode scores among num_pats number of patients
 #########
 
-sim_pat_draw <- function(sim_score, num_pats,num_iterations)  {
+sim_pat_draw <- function(sim_score, num_pats, num_iterations)  {
   
   r_100k = as.data.frame(matrix(nrow = num_iterations, ncol = 3))
   names(r_100k) = c("median","mean", "mode")
