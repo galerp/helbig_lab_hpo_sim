@@ -32,8 +32,8 @@ mica <- function(hpo1, hpo2)
   
 }
 
-pat_base <- function(exp321){
-  pat_table_base <- exp321 %>% 
+pat_base <- function(pat_phen){
+  pat_table_base <- pat_phen %>% 
   dplyr::select(famID,HPO) %>% 
   separate_rows(HPO, sep = ";") %>% unique()
   return(pat_table_base)
