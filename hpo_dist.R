@@ -8,7 +8,7 @@ source("hpo_dist_helpers.R")
 ######
 message(" \n Step 1 is executed: HPO Base and Prop Table is created \n \n ")
 
-pat_table_base <- pat_base(pat_phen) 
+pat_table_base <- pat_base(patient_phenome) 
 pat_table_prop <- pat_prop(pat_table_base)
 
 ######
