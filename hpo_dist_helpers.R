@@ -200,6 +200,41 @@ sim_pat_draw <- function(sim_score, num_pats, num_iterations)  {
   return(r_100k)
 }
 
+#########
+#Function - sim_par_perm
+##Parralelizes the perumutation analysis (sim_pat_draw) utilizing the number of cores available - 1
+##creating a list holding each distribution of permutations.
+##Input - 
+#         sim_score - similarity score matrix of all patients in cohort
+#         variants - patients with their respective variants
+#         ncor - number of cores to run the analysis on
+#         N - the number of iterations to randomly draw patients to compos the distributions
+##Output - 
+#         sim_pat_perm - a list holding each data frame of each permutation distribution
+#########
+    
+ sim_par_perm = function(sim_score, variants, n_cores, N){
+   
+   ## unique numbers of patient pairs with same gene
+   gene_pairs <- variants %>%
+        count(Gene.refGeneWithVer) %>%
+        rename(Freq = n)
+   pat_pairs <- gene_pairs$Freq %>% 
+        unique %>% 
+        as.list
+   
+   ## make and register cores 
+  registerDoParallel(makeCluster(n_cores))
+  ## creates the 100k dataframe for each pat_pairs and stores as a list
+  sim_pat_perm <- foreach( j = 1:length(pat_pairs)) %dopar% { 
+    library(dplyr)
+    sim_pat_draw(sim_score_file = sim_score,task_id = j,permutation = num_iterations)
+    }
+
+  names(sim_pat_perm) <- paste0("n_pats_",unlist(pat_pairs))
+  
+  return(sim_pat_perm)
+ }
 
 #########
 #Function - gene_df
