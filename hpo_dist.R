@@ -58,12 +58,14 @@ rownames(sim_score) = names(sim_score)
 
 num_iterations = input.yaml$num_of_iterations
 
-n2_100k <- sim_pat_draw(sim_score, 2,num_iterations)
-n3_100k <- sim_pat_draw(sim_score, 3,num_iterations)
-n4_100k <- sim_pat_draw(sim_score, 4,num_iterations)
-n5_100k <- sim_pat_draw(sim_score, 5,num_iterations)
-n7_100k <- sim_pat_draw(sim_score, 7,num_iterations)
+variants = input.yaml$variant_file
 
+# Calculate the number of cores available
+n_cores <- detectCores() - 1
+
+sim_pat_perm <- sim_par_perm(sim_score, variants, n_cores, N)
+
+saveRDS(sim_pat_perm, paste0(input.yaml$output_dir,"100k_sim_permutation.rds"))
 
 ###########
 #STEP 5: Generate P-values for Semantic Similarity within
@@ -71,10 +73,8 @@ n7_100k <- sim_pat_draw(sim_score, 7,num_iterations)
 
 message("\n Permutation is done. p-value for gene to phenotype is calculating \n \n  ")
 
-names(variant)[1] <- "famID"
-variant <- variant %>% mutate(famID = gsub("-","_", famID))
 
-famIDs_var <- variant$famID %>% unique  %>% as.data.frame %>% 
+famIDs_var <- variant$famID %>% unique %>% as.data.frame %>% 
   dplyr::rename('famID' = '.') %>% dplyr::mutate(var = "variant")
 
 famIDs_sim <- sim_score %>% rownames %>% as.data.frame %>% 
@@ -95,11 +95,11 @@ variant_sim <- variant %>% filter(famID %in% all_sim)
 denovo <- denovo_calc(variant_sim)
 
 #Table of denovos with famID and gene
-tab1 <- denovo %>%  dplyr::select(famID, Gene.refGene) %>% unique
+tab1 <- denovo %>% dplyr::select(famID, Gene.refGene) %>% unique
 
 
 #list of all genes
-all_genes <- tab1 %>%  dplyr::count(Gene.refGene) %>% 
+all_genes <- tab1 %>% dplyr::count(Gene.refGene) %>% 
   dplyr::rename(gene = Gene.refGene, Freq = n) %>% 
   filter(Freq > 1)
 
