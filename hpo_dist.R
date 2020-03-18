@@ -53,27 +53,6 @@ write.csv(sim_score,paste0(input.yaml$output_dir,"/sim_matrix.csv"),row.names = 
 ###########
 
 message("\n  Sim score file is written. Permutation Analysis is to be followed \n  \n ")
-rownames(sim_score) = names(sim_score)
-
-
-num_iterations = input.yaml$num_of_iterations
-
-variants = input.yaml$variant_file
-
-# Calculate the number of cores available
-n_cores <- detectCores() - 1
-
-sim_pat_perm <- sim_par_perm(sim_score, variants, n_cores, N)
-
-saveRDS(sim_pat_perm, paste0(input.yaml$output_dir,"100k_sim_permutation.rds"))
-
-###########
-#STEP 5: Generate P-values for Semantic Similarity within
-###########
-
-message("\n Permutation is done. p-value for gene to phenotype is calculating \n \n  ")
-
-
 famIDs_var <- variant$famID %>% unique %>% as.data.frame %>% 
   dplyr::rename('famID' = '.') %>% dplyr::mutate(var = "variant")
 
@@ -87,21 +66,43 @@ fam_combined <- famIDs_sim %>%  dplyr::full_join(famIDs_var)
 ##Trios without sim_scores and without variants
 no_sim <- as.vector(fam_combined$famID[is.na(fam_combined$sim) == TRUE])
 no_var <- as.vector(fam_combined$famID[is.na(fam_combined$var) == TRUE])
+
+if(length(no_sim) !=0){
+  message(paste0("\n  The following individuals are listed in the variant file, but do not have a sim score: \n",
+                no_sim, " \n  \n "))
+  }
+
 #Trios with sim_scores
 all_sim <- as.vector(fam_combined$famID[is.na(fam_combined$sim) == FALSE])
-variant_sim <- variant %>% filter(famID %in% all_sim)
+variant_sim <- variants %>% filter(famID %in% all_sim)
 
-
-denovo <- denovo_calc(variant_sim)
 
 #Table of denovos with famID and gene
-tab1 <- denovo %>% dplyr::select(famID, Gene.refGene) %>% unique
+tab1 <- variant_sim %>% dplyr::select(famID, Gene.refGeneWithVer) %>% unique
 
 
 #list of all genes
 all_genes <- tab1 %>% dplyr::count(Gene.refGene) %>% 
   dplyr::rename(gene = Gene.refGene, Freq = n) %>% 
   filter(Freq > 1)
+
+
+num_iterations = input.yaml$num_of_iterations
+
+variants = input.yaml$variant_file
+
+# Calculate the number of cores available
+n_cores <- detectCores() - 1
+
+sim_pat_perm <- sim_par_perm(sim_score, all_genes, n_cores, N)
+
+saveRDS(sim_pat_perm, paste0(input.yaml$output_dir,"100k_sim_permutation.rds"))
+
+###########
+#STEP 5: Generate P-values for Semantic Similarity within
+###########
+
+message("\n Permutation is done. p-value for gene to phenotype is calculating \n \n  ")
 
 
 #Creating dataframe of similarity comparisons with every combination of patient pairs 
