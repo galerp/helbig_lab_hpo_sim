@@ -68,9 +68,14 @@ no_sim <- as.vector(fam_combined$famID[is.na(fam_combined$sim) == TRUE])
 no_var <- as.vector(fam_combined$famID[is.na(fam_combined$var) == TRUE])
 
 if(length(no_sim) !=0){
-  message(paste0("\n  The following individuals are listed in the variant file, but do not have a sim score: \n",
+  message(paste0("\n  The following IDs are listed in the variant file, but do not have a sim score: \n",
                 no_sim, " \n  \n "))
   }
+
+message('IDs from sim matrix who do not have a variant : \n')
+  message( paste(rownames(sim_score)[rownames(sim_score) %!in% famIDs_var$famID][1:10],"\n"), '[truncated]...', length(rownames(sim_score)[rownames(sim_score) %!in% famIDs_var$famID]) - 10,'more') #sim_score but no variant
+
+
 
 #Trios with sim_scores
 all_sim <- as.vector(fam_combined$famID[is.na(fam_combined$sim) == FALSE])
@@ -102,7 +107,8 @@ saveRDS(sim_pat_perm, paste0(input.yaml$output_dir,"100k_sim_permutation.rds"))
 #STEP 5: Generate P-values for Semantic Similarity within
 ###########
 
-message("\n Permutation is done. p-value for gene to phenotype is calculating \n \n  ")
+message("\n Permutations are done.Saving output in '100k_sim_permutation.rds' \n
+          p-value for gene to phenotype are being calculating \n \n  ")
 
 
 #Creating dataframe of similarity comparisons with every combination of patient pairs 
