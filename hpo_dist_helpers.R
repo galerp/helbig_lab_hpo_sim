@@ -213,13 +213,11 @@ sim_pat_draw <- function(sim_score, num_pats, num_iterations)  {
 #         sim_pat_perm - a list holding each data frame of each permutation distribution
 #########
     
- sim_par_perm = function(sim_score, variants, n_cores, N){
+ sim_par_perm = function(sim_score, all_genes, n_cores, N){
    
    ## unique numbers of patient pairs with same gene
-   gene_pairs <- variants %>%
-        count(Gene.refGeneWithVer) %>%
-        rename(Freq = n)
-   pat_pairs <- gene_pairs$Freq %>% 
+   
+   pat_pairs <- all_genes$Freq %>% 
         unique %>% 
         as.list
    
